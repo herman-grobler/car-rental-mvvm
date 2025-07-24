@@ -27,17 +27,28 @@ def init_db():
             model TEXT NOT NULL,
             year INTEGER NOT NULL,
             daily_rate REAL NOT NULL,
-            available BOOLEAN DEFAULT TRUE
+            available BOOLEAN DEFAULT TRUE,
+            type TEXT NOT NULL,
+            fuel_capacity INTEGER NOT NULL,
+            transmission TEXT NOT NULL,
+            passenger_capacity INTEGER NOT NULL,
+            category TEXT NOT NULL,
+            is_popular BOOLEAN DEFAULT FALSE
         )
     """)
     
     cursor.execute("""
-        INSERT OR IGNORE INTO cars (make, model, year, daily_rate, available)
+        INSERT OR IGNORE INTO cars (make, model, year, daily_rate, available, type, fuel_capacity, transmission, passenger_capacity, category, is_popular)
         VALUES 
-        ('Toyota', 'Camry', 2023, 45.00, 1),
-        ('Honda', 'Civic', 2022, 35.00, 1),
-        ('Tesla', 'Model 3', 2024, 75.00, 1),
-        ('Ford', 'Explorer', 2023, 65.00, 1)
+        ('Koenigsegg', 'Sport', 2024, 99.00, 1, 'Sport', 90, 'Manual', 2, 'Popular Car', 1),
+        ('Nissan', 'GT-R', 2024, 80.00, 1, 'Sport', 80, 'Manual', 2, 'Popular Car', 1),
+        ('Rolls-Royce', 'Sedan', 2024, 96.00, 1, 'Sedan', 70, 'Manual', 4, 'Popular Car', 1),
+        ('All New Rush', 'SUV', 2024, 72.00, 1, 'SUV', 70, 'Manual', 6, 'Recommendation Car', 0),
+        ('CR-V', 'SUV', 2024, 80.00, 1, 'SUV', 80, 'Manual', 6, 'Recommendation Car', 0),
+        ('All New Terios', 'SUV', 2024, 74.00, 1, 'SUV', 90, 'Manual', 6, 'Recommendation Car', 0),
+        ('MG ZX Exclusive', 'Hatchback', 2024, 76.00, 1, 'Hatchback', 70, 'Manual', 4, 'Recommendation Car', 0),
+        ('New MG ZS', 'SUV', 2024, 80.00, 1, 'SUV', 80, 'Manual', 6, 'Recommendation Car', 0),
+        ('MG ZX Excite', 'Hatchback', 2024, 74.00, 1, 'Hatchback', 90, 'Manual', 4, 'Recommendation Car', 0)
     """)
     
     conn.commit()
@@ -50,6 +61,12 @@ class Car(BaseModel):
     year: int
     daily_rate: float
     available: bool = True
+    type: str
+    fuel_capacity: int
+    transmission: str
+    passenger_capacity: int
+    category: str
+    is_popular: bool = False
 
 @app.on_event("startup")
 async def startup_event():

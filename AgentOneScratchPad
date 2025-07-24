@@ -1,0 +1,117 @@
+# AgentOne Scratchpad - TDD Ping-Pong Workflow
+
+## Current State Analysis
+- React TypeScript project with Vite already exists in frontend/
+- Current components: Header, HeroSection, BookingForm, CarListings, Footer
+- CarListings has "View All" button (line 229) but no navigation functionality
+- NO testing setup exists yet - need to add testing dependencies
+- No CarCategoryScreen component exists
+
+## Testing Strategy
+
+### Phase 1: Setup Testing Infrastructure
+- Add Vitest, React Testing Library, and related dependencies
+- Configure Vitest config
+- Set up test utilities
+
+### Phase 2: Write Failing Tests For:
+
+#### 1. Basic App Functionality
+- App renders without crashing
+- Main components are present in the DOM
+
+#### 2. CarCategoryScreen Component (NEW)
+- Component renders with proper structure
+- Displays different car categories (Sport, SUV, Sedan, Hatchback)
+- Shows car counts for each category
+- Has proper navigation back functionality
+- Follows MVVM pattern with proper separation
+
+#### 3. Navigation Functionality
+- "View All" button in CarListings navigates to CarCategoryScreen
+- React Router setup for navigation
+- URL routing works correctly
+
+### Test File Structure:
+```
+src/
+  __tests__/
+    App.test.tsx
+    components/
+      CarCategoryScreen.test.tsx
+      CarListings.test.tsx
+  components/
+    CarCategoryScreen.tsx (to be created by AgentTwo)
+```
+
+### MVVM Pattern for CarCategoryScreen:
+- Model: CarCategory interface, car type definitions
+- View: CarCategoryScreen component (presentation only)
+- ViewModel: useCarCategories hook (business logic)
+- Service: Car category data fetching (future API integration)
+
+## Completed by AgentOne:
+1. ✅ Added testing dependencies to package.json
+2. ✅ Created Vitest configuration (vitest.config.ts)
+3. ✅ Created test setup and utilities (src/test/setup.ts, src/test/test-utils.tsx)
+4. ✅ Written failing tests for App basic functionality (src/__tests__/App.test.tsx)
+5. ✅ Written failing tests for CarCategoryScreen component (src/__tests__/components/CarCategoryScreen.test.tsx)
+6. ✅ Written failing tests for CarListings navigation (src/__tests__/components/CarListings.test.tsx)
+7. ✅ Created type definitions for MVVM pattern (src/types/CarCategory.ts)
+8. ✅ Created placeholder hook that will fail (src/hooks/useCarCategories.ts)
+
+## Files Created/Modified:
+- frontend/package.json (added test dependencies and scripts)
+- frontend/vitest.config.ts (test configuration)
+- frontend/src/test/setup.ts (test setup)
+- frontend/src/test/test-utils.tsx (test utilities with router)
+- frontend/src/__tests__/App.test.tsx (app tests)
+- frontend/src/__tests__/components/CarCategoryScreen.test.tsx (category screen tests)
+- frontend/src/__tests__/components/CarListings.test.tsx (navigation tests)
+- frontend/src/types/CarCategory.ts (model definitions)
+- frontend/src/hooks/useCarCategories.ts (placeholder hook)
+
+## Expected Test Failures:
+- CarCategoryScreen component doesn't exist
+- Navigation logic not implemented
+- React Router not configured
+- useCarCategories hook doesn't exist
+
+## Communication to AgentTwo:
+I have created comprehensive failing tests that define the expected behavior. Please implement the following to make the tests pass:
+
+### IMMEDIATE REQUIRED ACTIONS:
+1. **Install dependencies**: Run `npm install` in the frontend directory to install testing dependencies
+2. **Create CarCategoryScreen component** at `src/components/CarCategoryScreen.tsx` that:
+   - Renders "Car Categories" title
+   - Shows categories: Sport, SUV, Sedan, Hatchback with counts and descriptions
+   - Has "Back to Home" button that navigates to "/"
+   - Has "Select Category" buttons that navigate to "/cars?category=CategoryName"
+   - Has proper test IDs: `category-card-sport`, `category-card-suv`, etc.
+   - Shows loading/error states
+
+3. **Implement useCarCategories hook** at `src/hooks/useCarCategories.ts` that:
+   - Returns categories array with type, count, description
+   - Returns loading and error states
+   - Follows the CarCategoriesState interface
+
+4. **Update CarListings component** to:
+   - Import and use `useNavigate` from react-router-dom
+   - Make "View All" button navigate to "/categories"
+   - Make "Rent Now" buttons call navigate (with appropriate car data)
+
+5. **Set up React Router** in App.tsx:
+   - Wrap app with Router
+   - Add Routes for "/" and "/categories"
+   - Home route renders current App content
+   - Categories route renders CarCategoryScreen
+
+### TEST-DRIVEN REQUIREMENTS:
+The tests expect exactly these behaviors - follow them precisely:
+- CarCategoryScreen must display categories with specific text and counts
+- Navigation must use exact paths: "/", "/categories", "/cars?category=X"
+- Button text must match: "Back to Home", "Select Category", "View All"
+- Loading state shows "Loading categories..."
+- Error state shows "Error: [error message]"
+
+Run `npm test` after each step to see which tests pass. All tests should pass when implementation is complete.
